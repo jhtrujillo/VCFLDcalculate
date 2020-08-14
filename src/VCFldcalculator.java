@@ -432,8 +432,8 @@ public class VCFldcalculator {
 		
 		//ld.CalculateLD("/home/estuvar4/git/VCFLDcalculate/vcf/mergevcf.95ids.b_fourthfiltered.vcf", "scaffold_10012_793871","scaffold_10012_700758");
 		//System.out.println("--------------------------------------");
-		//ld.CalculateLD2("/home/estuvar4/git/VCFLDcalculate/vcf/mergevcf.95ids.b_fourthfiltered.vcf", "scaffold_10012_793871","scaffold_10012_700758");
-		//System.out.println("--------------------------------------");
+		ld.CalculateLD2("/home/estuvar4/git/VCFLDcalculate/vcf/mergevcf.95ids.b_fourthfiltered.vcf", "scaffold_10012_793871","scaffold_10012_700758");
+		System.out.println("--------------------------------------");
 		ld.CalculateLD3("/home/estuvar4/git/VCFLDcalculate/vcf/mergevcf.95ids.b_fourthfiltered.vcf", "scaffold_10012_793871","scaffold_10012_700758");
 		System.out.println("--------------------------------------");
 		ld.CalculateLD4("/home/estuvar4/git/VCFLDcalculate/vcf/mergevcf.95ids.b_fourthfiltered.vcf", "scaffold_10012_793871","scaffold_10012_700758");
