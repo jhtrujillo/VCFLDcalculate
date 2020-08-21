@@ -126,12 +126,6 @@ public class VCFLDcalculator {
 		else
 			r2 /= (p1 * q1 * (1 - p1) * (1 - q1));
 
-		//System.out.println("frecAB    : " + frecAB);
-		//System.out.println("frecp1    : " + p1);
-		//System.out.println("frecq1    : " + q1);
-		//System.out.println("d         : " + d);
-		//System.out.println("dprime    : " + dPrime);
-		//System.out.println("R2        : " + r2);
 		
 		System.out.println("d\t" +"dprime\t"+ "R2");
 		System.out.println(D + "\t" + dPrime + "\t"+ r2);
@@ -163,13 +157,6 @@ public class VCFLDcalculator {
 
 		r2 = (D * D) / (p1 * p2 * q1 * q2);
 
-		//System.out.println("frecAB    : " + frecAB);
-		//System.out.println("frecp1    : " + p1);
-		//System.out.println("frecq1    : " + q1);
-		//System.out.println("d        : " + D);
-		//System.out.println("dprime    : " + dPrime);
-		//System.out.println("R2        : " + r2);
-		
 		System.out.println("d\t" +"dprime\t"+ "R2");
 		System.out.println(D + "\t" + dPrime + "\t"+ r2);
 		
