@@ -7,7 +7,7 @@ import ngsep.variants.CalledGenomicVariant;
 import ngsep.vcf.VCFFileReader;
 import ngsep.vcf.VCFRecord;
 
-public class VCFldcalculator {
+public class VCFldcalculatorTesting {
 
 	// --------------------------------------------
 	// Cargo el VCF a memoria con modulos de NGSEP
@@ -428,7 +428,7 @@ public class VCFldcalculator {
 	}
 
 	public static void main(String[] args) throws IOException {
-		VCFldcalculator ld = new VCFldcalculator();
+		VCFldcalculatorTesting ld = new VCFldcalculatorTesting();
 		
 		//ld.CalculateLD("/home/estuvar4/git/VCFLDcalculate/vcf/mergevcf.95ids.b_fourthfiltered.vcf", "scaffold_10012_793871","scaffold_10012_700758");
 		//System.out.println("--------------------------------------");
@@ -439,7 +439,7 @@ public class VCFldcalculator {
 		ld.CalculateLD4("/home/estuvar4/git/VCFLDcalculate/vcf/mergevcf.95ids.b_fourthfiltered.vcf", "scaffold_10012_793871","scaffold_10012_700758");
 		
 		
-		VCFldcalculator r2ld = new VCFldcalculator();
+		VCFldcalculatorTesting r2ld = new VCFldcalculatorTesting();
 		
 		/*
 		try {
