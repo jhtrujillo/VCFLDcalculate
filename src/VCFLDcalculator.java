@@ -106,7 +106,7 @@ public class VCFLDcalculator {
 	}
 
 	// --------------------------------------------
-	// Calcular valores de LD según jorge.
+	// Calcular valores de LD NGSEP
 	// --------------------------------------------
 	public void getValuesLDJorge() throws IOException {
 		frecAB /= (numInd * 2);
@@ -132,7 +132,7 @@ public class VCFLDcalculator {
 	}
 
 	// --------------------------------------------
-	// Calcular valores de LD según On Measures of Gametic Disequilibrium R. C. Lewontin.
+	// Calcular valores de LD segï¿½n On Measures of Gametic Disequilibrium R. C. Lewontin.
 	// --------------------------------------------
 	public void getValuesLDLewontin() throws IOException {
 
