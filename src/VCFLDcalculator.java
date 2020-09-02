@@ -215,6 +215,7 @@ public class VCFLDcalculator {
 	}
 
 	public static void main(String[] args) throws IOException {
+		/*
 		VCFLDcalculator ld1 = new VCFLDcalculator();
 		ld1.CalculateLDNGSEP("/home/estuvar4/git/VCFLDcalculate/vcf/mergevcf.95ids.b_fourthfiltered-original.vcf",
 				"scaffold_15457_757834", "scaffold_12739_368254");
@@ -224,7 +225,9 @@ public class VCFLDcalculator {
 		ld2.CalculateLD("/home/estuvar4/git/VCFLDcalculate/vcf/mergevcf.95ids.b_fourthfiltered-original.vcf",
 				"scaffold_15457_757834", "scaffold_12739_368254");
 		ld2.getValuesLDLewontin();
-
+		
+		 */
+		
 		try {
 			String opcion = args[0];
 
@@ -233,6 +236,7 @@ public class VCFLDcalculator {
 					VCFLDcalculator ld = new VCFLDcalculator();
 					ld.CalculateLD(args[1], args[2], args[3]);
 					ld.getValuesLDJorge();
+					ld=null;
 					// ld.getValuesLDLewontin();
 				} catch (Exception e) {
 					System.out.println("Try: java -jar ld.jar [ldNGSEP | 1] [path_vcf] spn1_pos spn2_pos" + e);
@@ -241,9 +245,10 @@ public class VCFLDcalculator {
 
 			else if (opcion.compareTo("ldLewontin") == 0 | opcion.compareTo("2") == 0) {
 				try {
-					VCFLDcalculator ld = new VCFLDcalculator();
-					ld.CalculateLD(args[1], args[2], args[3]);
-					ld.getValuesLDLewontin();
+					VCFLDcalculator ld1 = new VCFLDcalculator();
+					ld1.CalculateLD(args[1], args[2], args[3]);
+					ld1.getValuesLDLewontin();
+					ld1=null;
 				} catch (Exception e) {
 					System.out.println("Try: java -jar ld.jar [ldLewontin | 2] [path_vcf] spn1_pos spn2_pos");
 				}
