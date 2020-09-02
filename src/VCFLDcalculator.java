@@ -102,9 +102,49 @@ public class VCFLDcalculator {
 			}
 
 		}
-
 	}
 
+	
+	// --------------------------------------------
+		// Calculo de LD entre dos SNPs
+		// --------------------------------------------
+		public void CalculateLDNGSEP(String filename, String SNP1, String SNP2) throws IOException {
+			List<VCFRecord> recordsInMemory = loadVCF(filename, SNP1, SNP2);
+
+			VCFRecord record1 = recordsInMemory.get(0);
+			VCFRecord record2 = recordsInMemory.get(1);
+
+			List<CalledGenomicVariant> calls1 = record1.getCalls();
+			List<CalledGenomicVariant> calls2 = record2.getCalls();
+
+			int n = calls1.size();
+
+			int opc1 = 0;
+			int opc2 = 0;
+			int opc3 = 0;
+			int opc4 = 0;
+
+			// --------------------------------------------
+			// Frecuencia de los alelos menores y de haplotipo AB.
+			// --------------------------------------------
+			for (int i = 0; i < n; i++) {
+				CalledGenomicVariant call1 = calls1.get(i);
+				CalledGenomicVariant call2 = calls2.get(i); 
+
+				// Dobles homocigotos.
+				if (call1.isHomozygousReference() && call2.isHomozygousReference()) {
+					p1 += 2;
+					q1 += 2;
+					frecAB += 2;
+					numInd += 1;
+				}
+
+				
+
+			}
+		}
+		
+		
 	// --------------------------------------------
 	// Calcular valores de LD NGSEP
 	// --------------------------------------------
@@ -112,6 +152,8 @@ public class VCFLDcalculator {
 		frecAB /= (numInd * 2);
 		p1 /= (numInd * 2);
 		q1 /= (numInd * 2);
+		p2 = 1 - p1;
+		q2 = 1 - q1;
 		d = frecAB - p1 * q1;
 
 		if (p1 == 0 || q1 == 0 || p1 == 1 || q1 == 1)
@@ -126,56 +168,90 @@ public class VCFLDcalculator {
 		else
 			r2 /= (p1 * q1 * (1 - p1) * (1 - q1));
 
+		// System.out.println("d\t" +"dprime\t"+ "R2");
+		System.out.println(d  + "\t" + dPrime + "\t" + r2);
 		
-		System.out.println("d\t" +"dprime\t"+ "R2");
-		System.out.println(D + "\t" + dPrime + "\t"+ r2);
 	}
 
 	// --------------------------------------------
-	// Calcular valores de LD seg�n On Measures of Gametic Disequilibrium R. C. Lewontin.
+	// Calcular valores de LD seg�n On Measures of Gametic Disequilibrium R. C.
+	// Lewontin.
 	// --------------------------------------------
 	public void getValuesLDLewontin() throws IOException {
 
 		frecAB /= (numInd * 2);
 		p1 /= (numInd * 2);
-		double p2 = 1 - p1;
 		q1 /= (numInd * 2);
-		double q2 = 1 - q1;
+		p2 = 1 - p1;
+		q2 = 1 - q1;
 		d = frecAB - p1 * q1;
 
-		double D = (p1 * p2) * (q1 * q2) - (p1 * p2) * (q1 * q1);
-
+		//double D = ( (p1 * p2) * (q1 * q2)) - ((p1 * p2) * (q1 * q1));
+		double D = frecAB - p1 * q1;
+		
 		double Dmax = 0;
 
 		if (D >= 0) {
 			Dmax = Math.min(p1 * q2, q1 * p2);
+			//Dmax = Math.min(p1 * (1 - q1), (1 - p1) * q1);
 		} else {
 			Dmax = Math.min(p1 * p2, q1 * q2);
+			//Dmax = Math.min(p1 * (1 - q1), (1 - p1) * q1);
 		}
-
-		dPrime = D / Dmax;
-
-		r2 = (D * D) / (p1 * p2 * q1 * q2);
-
-		System.out.println("d\t" +"dprime\t"+ "R2");
-		System.out.println(D + "\t" + dPrime + "\t"+ r2);
 		
+		if (p1 == 0 || q1 == 0 || p1 == 1 || q1 == 1)
+			dPrime = 0;
+		else
+			dPrime = D / Dmax;
+
+		if (p1 == 0 || q1 == 0 || p1 == 1 || q1 == 1)
+			r2 = 0;
+		else
+			r2 = (D * D) / (p1 * p2 * q1 * q2);
+
+		// System.out.println("d\t" +"dprime\t"+ "R2");
+		System.out.println(D  + "\t" + dPrime + "\t" + r2);
 
 	}
 
 	public static void main(String[] args) throws IOException {
-		VCFLDcalculator ld = new VCFLDcalculator();
-		// ld.CalculateLD("C:\\Users\\estuvar4\\git\\VCFLDcalculate\\vcf\\tmp.vcf",
-		// "scaffold_12997_216675","scaffold_12997_217253");
-		// ld.CalculateLD("C:\\Users\\estuvar4\\git\\VCFLDcalculate\\vcf\\mergevcf.95ids.b_fourthfiltered-original.vcf",
-		// "scaffold_10012_793871","scaffold_10012_700758");
-		ld.CalculateLD("C:\\Users\\estuvar4\\git\\VCFLDcalculate\\vcf\\mergevcf.95ids.b_fourthfiltered-original.vcf",
-				"scaffold_10012_917684", "scaffold_10012_700758");
-		// ld.CalculateLD("C:\\Users\\estuvar4\\git\\VCFLDcalculate\\vcf\\mergevcf.95ids.b_fourthfiltered-original.vcf",
-		// "scaffold_10012_584806", "scaffold_10012_584262");
-		ld.getValuesLDJorge();
-		System.out.println();
-		ld.getValuesLDLewontin();
+		VCFLDcalculator ld1 = new VCFLDcalculator();
+		ld1.CalculateLDNGSEP("/home/estuvar4/git/VCFLDcalculate/vcf/mergevcf.95ids.b_fourthfiltered-original.vcf",
+				"scaffold_15457_757834", "scaffold_12739_368254");
+		ld1.getValuesLDJorge();
+		
+		VCFLDcalculator ld2 = new VCFLDcalculator();
+		ld2.CalculateLD("/home/estuvar4/git/VCFLDcalculate/vcf/mergevcf.95ids.b_fourthfiltered-original.vcf",
+				"scaffold_15457_757834", "scaffold_12739_368254");
+		ld2.getValuesLDLewontin();
+
+		try {
+			String opcion = args[0];
+
+			if (opcion.compareTo("ldNGSEP") == 0 || opcion.compareTo("1") == 0) {
+				try {
+					VCFLDcalculator ld = new VCFLDcalculator();
+					ld.CalculateLD(args[1], args[2], args[3]);
+					ld.getValuesLDJorge();
+					// ld.getValuesLDLewontin();
+				} catch (Exception e) {
+					System.out.println("Try: java -jar ld.jar [ldNGSEP | 1] [path_vcf] spn1_pos spn2_pos" + e);
+				}
+			}
+
+			else if (opcion.compareTo("ldLewontin") == 0 | opcion.compareTo("2") == 0) {
+				try {
+					VCFLDcalculator ld = new VCFLDcalculator();
+					ld.CalculateLD(args[1], args[2], args[3]);
+					ld.getValuesLDLewontin();
+				} catch (Exception e) {
+					System.out.println("Try: java -jar ld.jar [ldLewontin | 2] [path_vcf] spn1_pos spn2_pos");
+				}
+			}
+
+		} catch (Exception e) {
+			System.out.println("Try java -jar ld.jar -help");
+		}
 
 	}
 
