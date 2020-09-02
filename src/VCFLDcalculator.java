@@ -19,6 +19,8 @@ public class VCFLDcalculator {
 	double frecAB = 0;
 	double D = 0;
 	double r2 = 0;
+	double r2_ngsep = 0;
+	double r2_lewinton = 0;
 	double dPrime;
 	double d;
 
@@ -169,7 +171,9 @@ public class VCFLDcalculator {
 			r2 /= (p1 * q1 * (1 - p1) * (1 - q1));
 
 		// System.out.println("d\t" +"dprime\t"+ "R2");
-		System.out.println(d  + "\t" + dPrime + "\t" + r2);
+		//System.out.println(d  + "\t" + dPrime + "\t" + r2);
+		
+		this.r2_ngsep=r2;
 		
 	}
 
@@ -210,8 +214,18 @@ public class VCFLDcalculator {
 			r2 = (D * D) / (p1 * p2 * q1 * q2);
 
 		// System.out.println("d\t" +"dprime\t"+ "R2");
-		System.out.println(D  + "\t" + dPrime + "\t" + r2);
+		//System.out.println(D  + "\t" + dPrime + "\t" + r2);
+		
+		this.r2_lewinton=r2;
 
+	}
+	
+	public double getR2Ngsep() {
+		return this.r2_ngsep;
+	}
+	
+	public double getR2Lewinton() {
+		return this.r2_lewinton;
 	}
 
 	public static void main(String[] args) throws IOException {
@@ -236,8 +250,8 @@ public class VCFLDcalculator {
 					VCFLDcalculator ld = new VCFLDcalculator();
 					ld.CalculateLD(args[1], args[2], args[3]);
 					ld.getValuesLDJorge();
+					//System.out.println(ld.getR2Ngsep());
 					ld=null;
-					// ld.getValuesLDLewontin();
 				} catch (Exception e) {
 					System.out.println("Try: java -jar ld.jar [ldNGSEP | 1] [path_vcf] spn1_pos spn2_pos" + e);
 				}
@@ -248,9 +262,36 @@ public class VCFLDcalculator {
 					VCFLDcalculator ld1 = new VCFLDcalculator();
 					ld1.CalculateLD(args[1], args[2], args[3]);
 					ld1.getValuesLDLewontin();
+					//System.out.println(ld1.getR2Lewinton());
 					ld1=null;
 				} catch (Exception e) {
-					System.out.println("Try: java -jar ld.jar [ldLewontin | 2] [path_vcf] spn1_pos spn2_pos");
+					System.out.println("Try: java -jar ld.jar [ldLewontin | 2] [path_vcf] spn1_pos spn2_pos | " +e);
+				}
+			}
+			
+			else if (opcion.compareTo("ldLewontinNgsep") == 0 | opcion.compareTo("3") == 0) {
+				try {
+					
+					VCFLDcalculator ld = new VCFLDcalculator();
+					ld.CalculateLDNGSEP(args[1], args[2], args[3]);
+					ld.getValuesLDJorge();
+					
+					VCFLDcalculator ld1 = new VCFLDcalculator();
+					ld1.CalculateLD(args[1], args[2], args[3]);
+					ld1.getValuesLDJorge();		
+					
+					
+					VCFLDcalculator ld2 = new VCFLDcalculator();
+					ld2.CalculateLD(args[1], args[2], args[3]);
+					ld2.getValuesLDLewontin();
+					
+					
+					System.out.println(ld.getR2Ngsep()+" "+ld1.getR2Ngsep()+" "+ld2.getR2Lewinton()+" "+args[4]);
+					
+					ld=null;
+					ld1=null;
+				} catch (Exception e) {
+					System.out.println("Try: java -jar ld.jar [ldLewontinNgsep | 3] [path_vcf] spn1_pos spn2_pos | "+e);
 				}
 			}
 
