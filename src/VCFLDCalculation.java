@@ -337,54 +337,50 @@ public class VCFLDCalculation {
 			
 			if (opcion.compareTo("-h") == 0 || opcion.compareTo("-help") == 0) {
 				try {
-					System.out.println("Try: java -jar ld.jar [VCFldcalculator | 1] [path_vcf] Method[Lewontin|LewontinOnlyHomo|NGSEP]");
-					System.out.println("Try: java -jar ld.jar [VCFldcalculatorPairse | 2] [path_vcf] Chr pos  Method[Lewontin|LewontinOnlyHomo|NGSEP]");
+					System.out.println("Try: java -jar ld.jar [VCFldcalculatorDosage|1] [path_vcf] LewontinOnlyHomoDosage ploidy");
+					System.out.println("Try: java -jar ld.jar [VCFldcalculator | 2] [path_vcf] Method[Lewontin|LewontinOnlyHomo|NGSEP]");
+					System.out.println("Try: java -jar ld.jar [VCFldcalculatorPairse | 3] [path_vcf] Chr pos  Method[Lewontin|LewontinOnlyHomo|NGSEP]");
 				} catch (Exception e) {
 					//System.out.println("Try: java -jar ld.jar [VCFldcalculator | 1] [path_vcf] Method[Lewontin|LewontinOnlyHomo|NGSEP]" + e);
 				}
 			}
 			else if (opcion.compareTo("VCFldcalculatorDosage") == 0 || opcion.compareTo("1") == 0) {
 				try {
-					VCFLDCalculationDosage ld = new VCFLDCalculationDosage();
+					VCFLDCalculationDosage ldDosage = new VCFLDCalculationDosage();
 					
-					String ploidy=args[3];
-					
-					if (ploidy.compareTo("")!=0) {
-						ld.VCFldcalulationAll(args[1], args[2], 2);
-						ld=null;
-					}else if (Integer.parseInt(ploidy)>2){
-						ld.VCFldcalulationAll(args[1], args[2], Integer.parseInt(ploidy));
-						ld=null;
-					}	
-					
+					int ploidy=Integer.parseInt(args[3]);
+					ldDosage.VCFldcalulationAll(args[1], args[2], ploidy );
+					ldDosage=null;
+						
 				} catch (Exception e) {
 					System.out.println("Try: java -jar ld.jar [VCFldcalculatorDosage|1] [path_vcf] LewontinOnlyHomoDosage ploidy" + e);
 				}
 			}
-			else if (opcion.compareTo("VCFldcalculator") == 0 || opcion.compareTo("1") == 0) {
+			else if (opcion.compareTo("VCFldcalculator") == 0 || opcion.compareTo("2") == 0) {
 				try {
 					VCFLDCalculation ld = new VCFLDCalculation();
 					ld.VCFldcalulationAll(args[1], args[2]);
 					ld=null;
 				} catch (Exception e) {
-					System.out.println("Try: java -jar ld.jar [VCFldcalculator|1] [path_vcf] Method[Lewontin|LewontinOnlyHomo|NGSEP]" + e);
+					System.out.println("Try: java -jar ld.jar [VCFldcalculator|2] [path_vcf] Method[Lewontin|LewontinOnlyHomo|NGSEP]" + e);
 				}
 			}
  
-			else if (opcion.compareTo("VCFldcalculatorPairse") == 0 | opcion.compareTo("2") == 0) {
+			else if (opcion.compareTo("VCFldcalculatorPairse") == 0 | opcion.compareTo("3") == 0) {
 				try {
 					VCFLDCalculation ld = new VCFLDCalculation();
 					ld.VCFldcalulation(args[1], args[2], args[3], args[4]);
 					ld=null;
 				} catch (Exception e) {
-					System.out.println("Try: java -jar ld.jar [VCFldcalculatorPairse | 2] [path_vcf] Chr pos  Method[Lewontin|LewontinOnlyHomo|NGSEP] " +e);
+					System.out.println("Try: java -jar ld.jar [VCFldcalculatorPairse | 3] [path_vcf] Chr pos  Method[Lewontin|LewontinOnlyHomo|NGSEP] " +e);
 				}
 			}
 		
 		} catch (Exception e) {
 			System.out.println("Try java -jar ld.jar -help");
-			System.out.println("Try: java -jar ld.jar [VCFldcalculator | 1] [path_vcf] Method[Lewontin|LewontinOnlyHomo|NGSEP]" + e);
-			System.out.println("Try: java -jar ld.jar [ldLewontin | 2] [path_vcf] Chr pos  Method[Lewontin|LewontinOnlyHomo|NGSEP] " +e);
+			System.out.println("Try: java -jar ld.jar [VCFldcalculatorDosage|1] [path_vcf] LewontinOnlyHomoDosage ploidy" + e);
+			System.out.println("Try: java -jar ld.jar [VCFldcalculator | 2] [path_vcf] Method[Lewontin|LewontinOnlyHomo|NGSEP]" + e);
+			System.out.println("Try: java -jar ld.jar [ldLewontin | 3] [path_vcf] Chr pos  Method[Lewontin|LewontinOnlyHomo|NGSEP] " +e);
 			
 		}
 		
