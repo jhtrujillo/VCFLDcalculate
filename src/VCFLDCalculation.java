@@ -3,6 +3,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import ngsep.variants.CalledGenomicVariant;
+import ngsep.variants.GenomicVariant;
+import ngsep.variants.VariantCallReport;
 import ngsep.vcf.VCFFileReader;
 import ngsep.vcf.VCFLDCalculator;
 import ngsep.vcf.VCFRecord;
@@ -229,6 +231,7 @@ public class VCFLDCalculation {
 
 	}
 
+	
 	public void CalculateLDNGSEP(VCFRecord record1, VCFRecord record2) throws IOException {
 		VCFLDCalculator ld = new VCFLDCalculator();
 		ld.calculateLDStatistics(record1, record2);
@@ -251,12 +254,12 @@ public class VCFLDCalculation {
 			String snp = calls.get(0).getSequenceName() + "_" + calls.get(0).getFirst();
 
 			if (snp.compareTo(SNP1) == 0) {
-				// System.out.println(snp);
 				SNPrecord1 = record;
 			}
 
 		}
 
+			
 		// Comparo el VCFRecord seleccionado con el resto de SNPs.
 		VCFFileReader in2 = new VCFFileReader(filename);
 		Iterator<VCFRecord> it2 = in2.iterator();
@@ -266,7 +269,6 @@ public class VCFLDCalculation {
 			VCFRecord SNPrecord2 = it2.next();
 
 			if (opcion.compareTo("Lewontin") == 0) {
-
 				getpairseLDLewontin(SNPrecord1, SNPrecord2);
 			} else if (opcion.compareTo("LewontinOnlyHomo") == 0) {
 				getValuesLDLewontinOnlyHomo(SNPrecord1, SNPrecord2);
@@ -304,11 +306,8 @@ public class VCFLDCalculation {
 				} else if (opcion.compareTo("NGSEP") == 0) {
 					CalculateLDNGSEP(SNPrecord1, SNPrecord2);
 				}
-
 			}
-
 		}
-
 	}
 
 	public static void main(String[] args) throws IOException {
@@ -316,7 +315,9 @@ public class VCFLDCalculation {
 		//VCFLDCalculation ld = new VCFLDCalculation();
 
 		//String Chr = "Pl01";
-		//String snp = "122138";
+		//String snp = "121870";
+		
+		//ld.VCFldcalulation("/home/estuvar4/Desktop/tmp.vcf", Chr, snp, "LewontinOnlyHomo");
 
 		// ld.VCFldcalulation("/home/estuvar4/Desktop/tmp.vcf", Chr, snp, "Lewontin");
 
@@ -329,6 +330,8 @@ public class VCFLDCalculation {
 		//ld.VCFldcalulationAll("/home/estuvar4/Desktop/tmp.vcf", "LewontinOnlyHomo");
 		//ld.VCFldcalulationAll("/home/estuvar4/Desktop/tmp.vcf", "NGSEP");
 		
+		
+		
 		try {
 			String opcion = args[0];
 			
@@ -338,6 +341,24 @@ public class VCFLDCalculation {
 					System.out.println("Try: java -jar ld.jar [VCFldcalculatorPairse | 2] [path_vcf] Chr pos  Method[Lewontin|LewontinOnlyHomo|NGSEP]");
 				} catch (Exception e) {
 					//System.out.println("Try: java -jar ld.jar [VCFldcalculator | 1] [path_vcf] Method[Lewontin|LewontinOnlyHomo|NGSEP]" + e);
+				}
+			}
+			else if (opcion.compareTo("VCFldcalculatorDosage") == 0 || opcion.compareTo("1") == 0) {
+				try {
+					VCFLDCalculationDosage ld = new VCFLDCalculationDosage();
+					
+					String ploidy=args[3];
+					
+					if (ploidy.compareTo("")!=0) {
+						ld.VCFldcalulationAll(args[1], args[2], 2);
+						ld=null;
+					}else if (Integer.parseInt(ploidy)>2){
+						ld.VCFldcalulationAll(args[1], args[2], Integer.parseInt(ploidy));
+						ld=null;
+					}	
+					
+				} catch (Exception e) {
+					System.out.println("Try: java -jar ld.jar [VCFldcalculatorDosage|1] [path_vcf] LewontinOnlyHomoDosage ploidy" + e);
 				}
 			}
 			else if (opcion.compareTo("VCFldcalculator") == 0 || opcion.compareTo("1") == 0) {
@@ -366,6 +387,7 @@ public class VCFLDCalculation {
 			System.out.println("Try: java -jar ld.jar [ldLewontin | 2] [path_vcf] Chr pos  Method[Lewontin|LewontinOnlyHomo|NGSEP] " +e);
 			
 		}
+		
 	}
 
 }
