@@ -25,7 +25,7 @@ public class VCFLDCalculationDosage {
 	double r2_lewinton = 0;
 	double dPrime;
 	double d;
-	double homcigousLeve=0.8;
+	double homcigousLeve=0.3;
 
 	public float roundToArray(float value, float [] array){
 		 
@@ -72,13 +72,17 @@ public class VCFLDCalculationDosage {
 			numInd = 0;
 			
 			
-			if(ploidy<2){
-				ploidy = 2;
+			if (ploidy<2) {
+				ploidy=2;
 			}
-			float ploidyLevels[] = new float[n+1];
+			
+			//System.out.println("Ploidia "+ploidy  );
+			
+			float ploidyLevels[] = new float[ploidy+1];
 
-			for(int y=0; y <= n;y++){
-				ploidyLevels[y] = (1.0f/n) * y;
+			for(int y=0; y <= ploidy;y++){
+				ploidyLevels[y] = (1.0f/ploidy) * y;
+				//System.out.println(ploidyLevels[y] );
 			}
 			
 			
@@ -118,6 +122,7 @@ public class VCFLDCalculationDosage {
 	    		if((countRef1 + countAlt1) > 0){
 	    			float dosage1_tmp = countRef1 / (countRef1 + countAlt1);
 	    			dosage1 = roundToArray(dosage1_tmp, ploidyLevels);
+	    			//System.out.println(dosage1_tmp);
     			}
 	    		
 	    		//Depends of ploidy assign a value to dosage
@@ -125,7 +130,6 @@ public class VCFLDCalculationDosage {
 	    			float dosage2_tmp = countRef2 / (countRef2 + countAlt2);
 	    			dosage2 = roundToArray(dosage2_tmp, ploidyLevels);
     			}
-	    		
 	    		//System.out.println(countRef1+" "+countAlt1+" "+dosage1+" || "+countRef2+" "+countAlt2+" "+dosage2);
 	    		//System.out.println(dosage1+" "+dosage2);
 	    		
@@ -236,9 +240,7 @@ public class VCFLDCalculationDosage {
 			if (opcion.compareTo("LewontinOnlyHomoDosage") == 0) {
 				getValuesLDLewontinOnlyHomo_Dosage(SNPrecord1, SNPrecord2, ploidy);
 			}
-			else if (opcion.compareTo("NGSEP") == 0) {
-				CalculateLDNGSEP(SNPrecord1, SNPrecord2);
-			}
+			
 
 		}
 
@@ -274,17 +276,18 @@ public class VCFLDCalculationDosage {
 	public static void main(String[] args) throws IOException {
 
 		
+		 VCFLDCalculationDosage ld = new VCFLDCalculationDosage();
+		 
+	
+		String Chr = "scaffold_12997";
+		String snp = "216675";
 		
 		
 		
-		//VCFLDCalculationDosage ld = new VCFLDCalculationDosage();
-
+		ld.VCFldcalulation("/home/estuvar4/Desktop/tmp.vcf", Chr, snp, "LewontinOnlyHomoDosage", 10);
+		//ld.VCFldcalulation("/home/estuvar4/Desktop/tmp.vcf", Chr, snp, "LewontinOnlyHomoDosage", 2);
 		
-		//String Chr = "Pl01";
-		//String snp = "121870";
-		//int ploidy = 10;
-		
-		//ld.VCFldcalulation("/home/estuvar4/Desktop/tmp.vcf", Chr, snp, "LewontinOnlyHomoDosage", ploidy);
+		//ld.VCFldcalulation("/home/estuvar4/Desktop/tmp.vcf", Chr, snp, "LewontinOnlyHomoDosage", 10);
 		
 		
 		//ld.VCFldcalulationAll("/home/estuvar4/Desktop/mergevcf.95ids.b_fourthfiltered.vcf", "LewontinOnlyHomoDosage", ploidy);
